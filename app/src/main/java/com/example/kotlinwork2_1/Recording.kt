@@ -7,16 +7,16 @@ class Recording {
             val list = ArrayList<Post>()
 
 
-           list.add(Post(1,"Дан",1634582976283,"Я сравниваю время вычисления как итерационных, так и рекурсивных факторных процедур",
+           list.add(Post(1,"Дан",1634582976283,"https://www.youtube.com/watch?v=4haurn3S8z8",
                like = false,
                comment = false,
                share = false,0,0,0,"Дементьева 12",
-               coordinates = Pair(55.84058,38.20251),type = Types.Reposts,hidePost = false))
+               coordinates = Pair(55.84058,38.20251),type = Types.YoutubeVideo,hidePost = false))
 
 
 
             list.add(Post(2,"Ил",1634583544357,"https://www.youtube.com/watch?v=vd205Q_EE18",
-                like = true,
+                like = false,
                 comment = false,
                 share = false,
                 0,0,0,

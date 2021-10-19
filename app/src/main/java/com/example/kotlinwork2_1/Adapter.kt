@@ -32,9 +32,9 @@ class Adapter: RecyclerView.Adapter<ViewHolder>() {
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
-            is PostViewHolder -> (
-                    holder.bind(items[position])
-                    )
+            is PostViewHolder -> {
+                holder.bind(items[position], position)
+            }
         }
     }
     fun submiDataList(blockList: ArrayList<Post>) {
@@ -57,7 +57,7 @@ class Adapter: RecyclerView.Adapter<ViewHolder>() {
         val typePost = itemView.typePost
         val imageHide = itemView.imageHide
 
-        fun bind(post: Post) {
+        fun bind(post: Post, position: Int) {
             if (post.hidePost) {
                 items.remove(post)
             }
@@ -106,18 +106,22 @@ class Adapter: RecyclerView.Adapter<ViewHolder>() {
             }
             likeImgBtn.setOnClickListener {
                 if (post.like) {
+                    post.like = false
+                    post.likeTxt -= 1
                     likeImgBtn.setImageResource(R.drawable.ic_baseline_favorite_disabled)
                     likeTxt.setTextColor(Color.BLACK)
-                    post.copy(likeTxt = post.likeTxt - 1, like = false)
+                    likeTxt.text = post.likeTxt.toString()
                 } else {
+                    post.like = true
+                    post.likeTxt += 1
                     likeImgBtn.setImageResource(R.drawable.ic_baseline_favorite_24)
                     likeTxt.setTextColor(Color.RED)
-                    post.copy(likeTxt = post.likeTxt + 1, like = true)
+                    likeTxt.text = post.likeTxt.toString()
                 }
             }
             authorxt.text = post.author
             if (post.likeTxt > 0) {
-                likeTxt.text = post.like.toString()
+                likeTxt.text = post.likeTxt.toString()
             } else {
                 likeTxt.text = ""
             }
@@ -134,7 +138,7 @@ class Adapter: RecyclerView.Adapter<ViewHolder>() {
             datetxt.text = dateToString(post)
 
             coordBtn.setOnClickListener {
-                val (lat, lng) = post.coordinates
+                val (lat, lng) = items[position].coordinates
                 val geoUri = Uri.parse("geo:$lat,$lng")
                 val intent = Intent().apply {
                     action = Intent.ACTION_VIEW
@@ -164,6 +168,5 @@ class Adapter: RecyclerView.Adapter<ViewHolder>() {
                 else -> "$toMin часов назад "
             }
         }
-
     }
 }
