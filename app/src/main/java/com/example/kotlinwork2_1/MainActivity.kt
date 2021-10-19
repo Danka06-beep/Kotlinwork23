@@ -1,29 +1,40 @@
 package com.example.kotlinwork2_1
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.post.*
+
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var adapter: Adapter
-
+    private lateinit var posadapter: Adapter
+    lateinit var post: Post
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        recyclerView.apply{
-            adapter = Adapter()
-        }
+        init()
+        addRecord()
     }
-        fun getDataBase() {
-            val list = ArrayList<Post>()
-            list.add(
-                Post(
-                    1, "Dan", 1634045445262, "la la la", like = false, comment = false, share = false, 0, 0, 0, "Дементьева 12", coordinates = Pair(55.84058, 38.2025),type = Types.Events, hidePost = true))
-           val iterator = list.listIterator()
-            while (iterator.hasNext()){
-                if(iterator.next().hidePost){
-                    iterator.remove()
-                }
+    fun init(){
+        recyclerView.apply{
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = Adapter()
+            posadapter = Adapter()
+            adapter = posadapter
+
+        }
+
+    }
+    fun addRecord(){
+        val data = Recording.getDataBase()
+        val iterator = data.listIterator()
+        while (iterator.hasNext()){
+            if(iterator.next().hidePost){
+                iterator.remove()
             }
         }
+       posadapter.submiDataList(data)
+    }
 }

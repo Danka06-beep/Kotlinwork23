@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.post.view.*
 
-class Adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class Adapter: RecyclerView.Adapter<ViewHolder>() {
 
     var items: ArrayList<Post> = ArrayList()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return PostViewHolder(
             LayoutInflater.from(
                 parent.context
@@ -27,13 +30,18 @@ class Adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int {
         return items.size
     }
-
-
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        when (holder) {
+            is PostViewHolder -> (
+                    holder.bind(items[position])
+                    )
+        }
+    }
     fun submiDataList(blockList: ArrayList<Post>) {
         items = blockList
     }
     inner class PostViewHolder
-    constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    constructor(itemView: View) : ViewHolder(itemView) {
         val authorxt = itemView.authorxt
         val txt = itemView.txt
         val likeTxt = itemView.likeTxt
@@ -53,6 +61,8 @@ class Adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             if (post.hidePost) {
                 items.remove(post)
             }
+            val requesoption = RequestOptions().placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
             when (post.type) {
                 Types.YoutubeVideo -> {
                     txt.visibility = View.GONE
@@ -65,10 +75,15 @@ class Adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         }
                         itemView.context.startActivity(intent)
                     }
+                    typePost.setText(R.string.Youtube_video)
                 }
                 Types.SponsoredPosts -> {
                     txt.visibility = View.GONE
                     postImage.visibility = View.VISIBLE
+                    Glide.with(itemView.context)
+                        .applyDefaultRequestOptions(requesoption)
+                        .load(post.txt)
+                        .into(postImage)
                     postImage.setOnClickListener {
                         val intent = Intent().apply {
                             action = Intent.ACTION_VIEW
@@ -76,15 +91,28 @@ class Adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         }
                         itemView.context.startActivity(intent)
                     }
+                    typePost.setText(R.string.Sponsored_posts)
                 }
                 Types.Reposts -> {
                     repostImgAutor.visibility = View.VISIBLE
                     repostDateText.visibility = View.VISIBLE
                     repostAutorText.visibility = View.VISIBLE
-                    txt.text = post.txt
+
                     repostDateText.text = post.dateRepost?.toString()
                     repostAutorText.text = post.autorRepost
                     repostDateText.text = dateToString(post)
+                    typePost.setText(R.string.Reposts)
+                }
+            }
+            likeImgBtn.setOnClickListener {
+                if (post.like) {
+                    likeImgBtn.setImageResource(R.drawable.ic_baseline_favorite_disabled)
+                    likeTxt.setTextColor(Color.BLACK)
+                    post.copy(likeTxt = post.likeTxt - 1, like = false)
+                } else {
+                    likeImgBtn.setImageResource(R.drawable.ic_baseline_favorite_24)
+                    likeTxt.setTextColor(Color.RED)
+                    post.copy(likeTxt = post.likeTxt + 1, like = true)
                 }
             }
             authorxt.text = post.author
@@ -104,17 +132,7 @@ class Adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 shareTxt.text = ""
             }
             datetxt.text = dateToString(post)
-            likeImgBtn.setOnClickListener {
-                if (post.like) {
-                    likeImgBtn.setImageResource(R.drawable.ic_baseline_favorite_disabled)
-                    likeTxt.setTextColor(Color.BLACK)
-                    post.copy(likeTxt = post.likeTxt - 1, like = false)
-                } else {
-                    likeImgBtn.setImageResource(R.drawable.ic_baseline_favorite_24)
-                    likeTxt.setTextColor(Color.RED)
-                    post.copy(likeTxt = post.likeTxt + 1, like = true)
-                }
-            }
+
             coordBtn.setOnClickListener {
                 val (lat, lng) = post.coordinates
                 val geoUri = Uri.parse("geo:$lat,$lng")
@@ -147,9 +165,5 @@ class Adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        TODO("Not yet implemented")
     }
 }
