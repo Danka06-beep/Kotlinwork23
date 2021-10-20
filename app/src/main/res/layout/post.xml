@@ -9,6 +9,7 @@
     android:layout_marginTop="16dp"
     android:elevation="4dp"
     android:padding="15dp"
+    android:background="@color/white"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.551"
     app:layout_constraintStart_toStartOf="parent"
