@@ -42,13 +42,20 @@ class MainActivity : AppCompatActivity() {
                 .filter {
                     !it.hidePost
                 }
+            val dataRecording = Recording.getPostAdvertising()
             val data = ArrayList<Post>()
             var temp = 0
-            for (i in 0..dataPost.size - 1) {
-                data.add(dataPost[i])
+            var tempPost = 0
+            for (element in dataPost) {
+                data.add(element)
                 temp++
+                if (temp == 1 && tempPost < dataRecording.size) {
+                    temp = 0
+                    data.add(dataRecording[tempPost])
+                    tempPost++
+                }
             }
-            posadapter.submiDataList(data as ArrayList<Post>)
+            posadapter.submiDataList(data)
             posadapter.notifyItemRangeInserted(0, data.size)
             withContext(Main) {
                 progressBar.visibility = ProgressBar.GONE

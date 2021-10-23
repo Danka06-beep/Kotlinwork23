@@ -14,8 +14,9 @@ object Recording {
     }
 
     suspend fun getPosts(): List<Post> =
-        clients.get(urlString = "https://raw.githubusercontent.com/yarchike/work_2_2_toJSON/master/posts.json")
-
+        clients.get(urlString = "https://raw.githubusercontent.com/Danka06-beep/kotWork22/master/post.json")
+    suspend fun getPostAdvertising( ): List<Post> =
+        clients.get(urlString = "https://raw.githubusercontent.com/Danka06-beep/kotWork22/master/advertising.json")
 }
 
 

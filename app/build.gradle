@@ -34,6 +34,9 @@ android {
     viewBinding {
         enabled = true
     }
+    packagingOptions{
+        pickFirst "androidsupportmultidexversion.txt"
+    }
 }
 
 dependencies {
