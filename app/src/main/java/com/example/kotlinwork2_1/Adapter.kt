@@ -56,7 +56,7 @@ class Adapter: RecyclerView.Adapter<ViewHolder>() {
         val repostAutorText = itemView.repostAutorText
         val typePost = itemView.typePost
         val imageHide = itemView.imageHide
-
+        val quantityView = itemView.quantityView
         fun bind(post: Post, position: Int) {
             if (post.hidePost) {
                 items.remove(post)
@@ -136,6 +136,7 @@ class Adapter: RecyclerView.Adapter<ViewHolder>() {
                 shareTxt.text = ""
             }
             datetxt.text = dateToString(post)
+            quantityView.text = post.viewPost.toString()
 
             coordBtn.setOnClickListener {
                 val (lat, lng) = items[position].coordinates

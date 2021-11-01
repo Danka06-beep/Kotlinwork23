@@ -16,7 +16,8 @@ data class Post(val id: Int,
                 val url: String? = null,
                 val dateRepost: Long? = null,
                 val autorRepost: String? = null,
-                var hidePost: Boolean = false) {
+                var hidePost: Boolean = false,
+                var viewPost: Long = 0) {
 
     override fun toString(): String {
         return "$id : $hidePost"

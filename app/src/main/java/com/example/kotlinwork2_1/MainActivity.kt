@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             withContext(Main) {
                 progressBar.visibility = ProgressBar.GONE
             }
+
         }
 
     }

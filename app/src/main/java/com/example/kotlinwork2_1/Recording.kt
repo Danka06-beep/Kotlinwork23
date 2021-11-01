@@ -12,11 +12,12 @@ object Recording {
             accept(ContentType.Text.Plain, ContentType.Application.Json)
         }
     }
-
     suspend fun getPosts(): List<Post> =
-        clients.get(urlString = "https://raw.githubusercontent.com/Danka06-beep/kotWork22/master/post.json")
+        clients.get(urlString = "http://127.0.0.1:8080/api/v1/posts")
     suspend fun getPostAdvertising( ): List<Post> =
-        clients.get(urlString = "https://raw.githubusercontent.com/Danka06-beep/kotWork22/master/advertising.json")
+        clients.get(urlString = "http://127.0.0.1:8080/api/v1/posts")
+
+
 }
 
 
